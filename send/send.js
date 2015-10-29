@@ -1,4 +1,5 @@
 var amqp = require('amqplib/callback_api');
+var argv = require('optimist').argv;
 // then connect to RabbitMQ server
 
 /*
@@ -10,6 +11,7 @@ amqp.connect('amqp://localhost', function(err, conn) {
 });
 // To send, we must declare a queue for us to send to; then we can publish a message to the queue:
 */
+var times = argv.send_time
 
 amqp.connect('amqp://localhost', function(err, conn) {
 
@@ -18,7 +20,7 @@ amqp.connect('amqp://localhost', function(err, conn) {
 
     ch.assertQueue(queue, {durable: false});
 
-    for (var i = 0; i < 10000; i++) {
+    for (var i = 0; i < times; i++) {
         ch.sendToQueue(queue, new Buffer('Hello World!'+i));
     }
 
